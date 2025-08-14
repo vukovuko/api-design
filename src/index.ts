@@ -1,6 +1,7 @@
 import app from "./server.ts";
+import env from "../env.ts";
 
-app.listen(3000, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
-  console.log(`Environment: ${process.env.APP_STAGE}`);
+app.listen(env.PORT, () => {
+  console.log(`Server running on port ${env.PORT}`);
+  console.log(`Environment: ${env.APP_STAGE}`);
 });
