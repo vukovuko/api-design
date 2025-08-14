@@ -69,14 +69,14 @@ try {
   env = envSchema.parse(process.env);
 } catch (error) {
   if (error instanceof z.ZodError) {
-    console.error("Invalid environment variables:");
-    console.error(JSON.stringify(error.flatten().fieldErrors, null, 2));
+    console.error(z.prettifyError(error));
+    console.error(JSON.stringify(z.treeifyError(error), null, 2));
 
     // More detailed error messages
-    for (const issue of error.issues) {
-      const path = issue.path.join(".");
-      console.error(`  ${path}: ${issue.message}`);
-    }
+    error.issues.forEach((err) => {
+      const path = err.path.join(".");
+      console.log(`${path}: ${err.message}`);
+    });
 
     process.exit(1);
   }
