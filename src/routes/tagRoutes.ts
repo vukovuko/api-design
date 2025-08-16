@@ -19,7 +19,7 @@ router.put("/:id", (req: Request, res: Response) => {
 });
 
 router.delete("/:id", (req: Request, res: Response) => {
-  res.status(204).json({ message: `Delete tag ${req.params.id}` });
+  res.status(200).json({ message: `Delete tag ${req.params.id}` });
 });
 
 export default router;
