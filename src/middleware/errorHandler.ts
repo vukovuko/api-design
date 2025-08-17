@@ -12,11 +12,7 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction
 ) => {
-  if (env.APP_STAGE === "dev") {
-    console.error(err.stack ?? err);
-  } else {
-    console.error(err);
-  }
+  console.error(err.stack);
 
   let status = err.status || 500;
   let message = err.message || "Internal Server Error";
