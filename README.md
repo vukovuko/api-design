@@ -2,7 +2,7 @@
 
 ## Base URL
 ```
-http://localhost:3000/api
+http://api-design-2bfi.onrender.com/api
 ```
 
 ## Authentication
