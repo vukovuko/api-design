@@ -1,7 +1,8 @@
-import { Router, type Request, type Response } from "express";
-import { z } from "zod";
+import { Router } from "express";
+import { register, login } from "../controllers/authController.ts";
 import { validateBody } from "../middleware/validation.ts";
-import { login, register } from "../controllers/authController.ts";
+import { z } from "zod";
+import { insertUserSchema } from "../db/schema.ts";
 
 const router = Router();
 
@@ -22,16 +23,8 @@ const loginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
-router.post("/register", validateBody(registerSchema), register);
-
+// Routes
+router.post("/register", validateBody(insertUserSchema), register);
 router.post("/login", validateBody(loginSchema), login);
-
-router.post("/logout", (req: Request, res: Response) => {
-  res.status(200).json({ message: "Logout successful" });
-});
-
-router.post("/refresh", (req: Request, res: Response) => {
-  res.status(200).json({ message: "Refresh token successful" });
-});
 
 export default router;

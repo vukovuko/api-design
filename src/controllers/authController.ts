@@ -45,7 +45,7 @@ export const register = async (req: Request, res: Response) => {
       token,
     });
   } catch (error) {
-    console.error("Registration error", error);
+    console.error("Registration error:", error);
     res.status(500).json({ error: "Failed to create user" });
   }
 };
@@ -65,8 +65,6 @@ export const login = async (req: Request, res: Response) => {
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
-      // TODO: Lock user account after 3 failed login attempts
-      // TODO: Send reset password email
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
@@ -77,7 +75,6 @@ export const login = async (req: Request, res: Response) => {
       username: user.username,
     });
 
-    // TODO: Send refresh token
     res.json({
       message: "Login successful",
       user: {
@@ -90,7 +87,7 @@ export const login = async (req: Request, res: Response) => {
       token,
     });
   } catch (error) {
-    console.error("Login error", error);
+    console.error("Login error:", error);
     res.status(500).json({ error: "Failed to login" });
   }
 };
