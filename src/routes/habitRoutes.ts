@@ -28,7 +28,7 @@ const createHabitSchema = z.object({
     message: "Frequency must be daily, weekly, or monthly",
   }),
   targetCount: z.number().int().positive().optional().default(1),
-  tagIds: z.array(z.string().uuid()).optional(),
+  tagIds: z.array(z.uuid()).optional(),
 });
 
 const updateHabitSchema = z.object({
@@ -37,15 +37,15 @@ const updateHabitSchema = z.object({
   frequency: z.enum(["daily", "weekly", "monthly"]).optional(),
   targetCount: z.number().int().positive().optional(),
   isActive: z.boolean().optional(),
-  tagIds: z.array(z.string().uuid()).optional(),
+  tagIds: z.array(z.uuid()).optional(),
 });
 
 const uuidSchema = z.object({
-  id: z.string().uuid("Invalid habit ID format"),
+  id: z.uuid("Invalid habit ID format"),
 });
 
 const habitIdSchema = z.object({
-  habitId: z.string().uuid("Invalid habit ID format"),
+  habitId: z.uuid("Invalid habit ID format"),
 });
 
 const logCompletionSchema = z.object({
@@ -53,16 +53,16 @@ const logCompletionSchema = z.object({
 });
 
 const tagIdSchema = z.object({
-  tagId: z.string().uuid("Invalid tag ID format"),
+  tagId: z.uuid("Invalid tag ID format"),
 });
 
 const habitTagSchema = z.object({
-  id: z.string().uuid("Invalid habit ID format"),
-  tagId: z.string().uuid("Invalid tag ID format"),
+  id: z.uuid("Invalid habit ID format"),
+  tagId: z.uuid("Invalid tag ID format"),
 });
 
 const addTagsSchema = z.object({
-  tagIds: z.array(z.string().uuid()).min(1, "At least one tag ID is required"),
+  tagIds: z.array(z.uuid()).min(1, "At least one tag ID is required"),
 });
 
 // Routes
