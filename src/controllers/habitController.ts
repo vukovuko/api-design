@@ -138,6 +138,7 @@ export const updateHabit = async (req: AuthenticatedRequest, res: Response) => {
         .where(and(eq(habits.id, id), eq(habits.userId, userId)))
         .returning();
 
+      // If we want to exit out of transation, we can throw an error
       if (!updatedHabit) {
         throw new Error("Habit not found");
       }

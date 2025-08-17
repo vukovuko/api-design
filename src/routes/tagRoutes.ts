@@ -33,7 +33,7 @@ const updateTagSchema = z.object({
 });
 
 const uuidSchema = z.object({
-  id: z.string().uuid("Invalid tag ID format"),
+  id: z.uuid("Invalid tag ID format"),
 });
 
 router.get("/", getTags);

@@ -45,7 +45,7 @@ export const register = async (req: Request, res: Response) => {
       token,
     });
   } catch (error) {
-    console.error("Registration error: ", error);
+    console.error("Registration error:", error);
     res.status(500).json({ error: "Failed to create user" });
   }
 };
