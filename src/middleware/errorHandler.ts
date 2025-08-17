@@ -3,25 +3,27 @@ import env from "../../env.ts";
 
 export interface CustomError extends Error {
   status?: number;
-  code?: string;
+  code?: string | number;
 }
 
 export const errorHandler = (
   err: CustomError,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
-  console.error(err.stack);
+  if (env.APP_STAGE === "dev") {
+    console.error(err.stack ?? err);
+  } else {
+    console.error(err);
+  }
 
-  // Default error
   let status = err.status || 500;
   let message = err.message || "Internal Server Error";
 
-  // Handle specific error types
   if (err.name === "ValidationError") {
     status = 400;
-    message = "Validation Error";
+    message = err.message || "Validation Error";
   }
 
   if (err.name === "UnauthorizedError") {
@@ -29,20 +31,19 @@ export const errorHandler = (
     message = "Unauthorized";
   }
 
-  if (err.code === "23505") {
-    // PostgreSQL unique violation
+  const pgCode = typeof err.code === "string" ? err.code : undefined;
+  if (pgCode === "23505") {
     status = 409;
     message = "Resource already exists";
   }
-
-  if (err.code === "23503") {
-    // PostgreSQL foreign key violation
+  if (pgCode === "23503") {
     status = 400;
     message = "Invalid reference";
   }
 
   res.status(status).json({
     error: message,
+    code: err.code !== undefined ? String(err.code) : undefined,
     ...(env.APP_STAGE === "dev" && {
       stack: err.stack,
       details: err.message,
@@ -50,8 +51,9 @@ export const errorHandler = (
   });
 };
 
-export const notFound = (req: Request, res: Response, next: NextFunction) => {
+export const notFound = (req: Request, _res: Response, next: NextFunction) => {
   const error = new Error(`Not found - ${req.originalUrl}`) as CustomError;
   error.status = 404;
+  error.code = "NOT_FOUND";
   next(error);
 };
