@@ -12,8 +12,6 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction
 ) => {
-  console.error(err.stack);
-
   let status = err.status || 500;
   let message = err.message || "Internal Server Error";
 
