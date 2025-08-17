@@ -27,10 +27,13 @@ export const verifyToken = async (token: string): Promise<JwtPayload> => {
   const secretKey = createSecretKey(env.JWT_SECRET, "utf-8");
   const { payload } = await jwtVerify(token, secretKey);
 
+  // return payload as JwtPayload;
   return {
     id: payload.id as string,
     email: payload.email as string,
     username: payload.username as string,
+    expiresAt: payload.exp as number,
+    initializedAt: payload.iat as number,
   };
 };
 
